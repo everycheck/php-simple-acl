@@ -8,7 +8,7 @@ use Doctrine\Common\Annotations\Annotation;
  * @Annotation
  * @Target("CLASS")
  */
-class Acl
+class Acl extends Annotation
 {
     /**
      * @Required
