@@ -2,10 +2,10 @@
 
 namespace Everycheck\Acl;
 
-use Doctrine\Common\Annotations\Annotation as DoctrineAnnotation;
+use Doctrine\Common\Annotations\Annotation;
 
 /**
- * @DoctrineAnnotation
+ * @Annotation
  * @Target("CLASS")
  */
 class Acl
