@@ -7,11 +7,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use EveryCheck\Acl\Annotation\Acl;
 use EveryCheck\Acl\Entity\AccessControlListInterface;
 use EveryCheck\Acl\Event\RequestPopulationEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface
 
 class AclManager
 {
 
-	public function __construct(EntityManagerInterface $em,$eventDispatcher)
+	public function __construct(EntityManagerInterface $em,EventDispatcherInterface $eventDispatcher)
 	{
 		$this->em              = $em;
         $this->eventDispatcher = $eventDispatcher;

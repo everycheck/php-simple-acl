@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "EveryCheck\\Acl\\": ""
+            "EveryCheck\\Acl\\": "src/"
         },
         "exclude-from-classmap": [
             "/Tests/"
