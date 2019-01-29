@@ -1,6 +1,6 @@
 <?php
 
-namespace Everycheck\Acl;
+namespace Everycheck\Acl\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
 
