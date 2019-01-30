@@ -1,5 +1,5 @@
 <?php
-namespace Everycheck\Acl\Event;
+namespace EveryCheck\Acl\Event;
  
 use Symfony\Component\EventDispatcher\Event;
  
@@ -8,21 +8,21 @@ class RequestPopulationEvent extends Event
 
 	const NAME = 'acl_event.request_population';
 
-    private $study = null;
+    private $entity = null;
     private $users = null;
 
-    public function __construct(Study $study)
+    public function __construct($entity)
     {
-    	$this->study = $study;
+    	$this->entity = $entity;
         $this->users = [];
     }
   
-    public function getStudy()
+    public function getEntity()
     {
-        return $this->study;
+        return $this->entity;
     }
 
-    public function addUser(OwnerInterface $user)
+    public function addUser($user)
     {
         $this->users[] = $user;
         return $this;

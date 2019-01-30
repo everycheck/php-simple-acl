@@ -7,15 +7,17 @@ use Doctrine\ORM\EntityManagerInterface;
 use EveryCheck\Acl\Annotation\Acl;
 use EveryCheck\Acl\Entity\AccessControlListInterface;
 use EveryCheck\Acl\Event\RequestPopulationEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\Common\Annotations\Reader;
 
 class AclManager
 {
 
-	public function __construct(EntityManagerInterface $em,EventDispatcherInterface $eventDispatcher)
+	public function __construct(EntityManagerInterface $em,EventDispatcherInterface $eventDispatcher,Reader $annotationReader)
 	{
-		$this->em              = $em;
-        $this->eventDispatcher = $eventDispatcher;
+		$this->em               = $em;
+        $this->eventDispatcher  = $eventDispatcher;
+        $this->annotationReader = $annotationReader;
 	}
 
     private function getAclClassFromAnnotation($entity):string
@@ -24,16 +26,21 @@ class AclManager
         $annotation = $this->annotationReader->getClassAnnotation($entityReflextionClass,Acl::class );
         if(empty($annotation)) 
         {
-            throw new Exception("No Acl annotation defined", 1);
+            throw new \Exception("No Acl annotation defined", 1);
         }
 
         $aclClass = $annotation->getClass();
 
-        if($aclClass instanceof AccessControlListInterface)
+        if(class_exists($aclClass) ==  false)
+        {
+            throw new \Exception("Class $aclClass does not exist", 1);
+        }
+
+        if(new $aclClass() instanceof AccessControlListInterface)
         {
             return $aclClass;
         }
-        throw new Exception("Invalid acl class", 1);
+        throw new \Exception("Invalid acl class", 1);
     }
 
 	public function updateAclOf($entity)

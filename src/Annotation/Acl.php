@@ -1,14 +1,11 @@
 <?php
-
 namespace Everycheck\Acl\Annotation;
-
-use Doctrine\Common\Annotations\Annotation;
 
 /**
  * @Annotation
  * @Target("CLASS")
  */
-class Acl extends Annotation
+class Acl
 {
     /**
      * @Required

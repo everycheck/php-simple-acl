@@ -1,5 +1,5 @@
 <?php
-namespace Everycheck\Acl\Entity;
+namespace EveryCheck\Acl\Entity;
 
 interface AccessControlListInterface
 {
