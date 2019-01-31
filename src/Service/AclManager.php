@@ -4,12 +4,11 @@ namespace EveryCheck\Acl\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-use EveryCheck\Acl\Annotation\Acl;
+use EveryCheck\Acl\Annotation\Restricted;
 use EveryCheck\Acl\Entity\AccessControlListInterface;
 use EveryCheck\Acl\Event\RequestPopulationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Annotations\Reader;
-
 
 use UserBundle\Entity\User;
 
@@ -27,7 +26,7 @@ class AclManager
     public function isRegisterForAcl($entityClass)
     {
         $entityReflextionClass = new \ReflectionClass($entityClass);
-        $annotation = $this->annotationReader->getClassAnnotation($entityReflextionClass,Acl::class );
+        $annotation = $this->annotationReader->getClassAnnotation($entityReflextionClass,Restricted::class );
         return empty($annotation) == false;
     }
 
@@ -38,7 +37,7 @@ class AclManager
             throw new \Exception("No Acl annotation defined", 1);
         }
 
-        $this->clearAclOf($aclClass,$entity);
+        $this->clearAclOf($entity);
 
         $event = new RequestPopulationEvent($entity);
         $this->eventDispatcher->dispatch(RequestPopulationEvent::NAME,$event);
@@ -62,7 +61,7 @@ class AclManager
         $connection->insert('acl_'.$entityTableName,$data);
     }
 
-    protected function clearAclOf(,$entity)
+    protected function clearAclOf($entity)
     {       
         $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
         $data = [
