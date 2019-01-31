@@ -10,6 +10,9 @@ use EveryCheck\Acl\Event\RequestPopulationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Annotations\Reader;
 
+
+use UserBundle\Entity\User;
+
 class AclManager
 {
 
@@ -20,54 +23,52 @@ class AclManager
         $this->annotationReader = $annotationReader;
 	}
 
-    private function getAclClassFromAnnotation($entity):string
+
+    public function isRegisterForAcl($entityClass)
     {
-        $entityReflextionClass = new \ReflectionClass(get_class($entity));
+        $entityReflextionClass = new \ReflectionClass($entityClass);
         $annotation = $this->annotationReader->getClassAnnotation($entityReflextionClass,Acl::class );
-        if(empty($annotation)) 
-        {
-            throw new \Exception("No Acl annotation defined", 1);
-        }
-
-        $aclClass = $annotation->getClass();
-
-        if(class_exists($aclClass) ==  false)
-        {
-            throw new \Exception("Class $aclClass does not exist", 1);
-        }
-
-        if(new $aclClass() instanceof AccessControlListInterface)
-        {
-            return $aclClass;
-        }
-        throw new \Exception("Invalid acl class", 1);
+        return empty($annotation) == false;
     }
 
 	public function updateAclOf($entity)
 	{
-        $aclClass = $this->getAclClassFromAnnotation($entity);
+        if($this->isRegisterForAcl(get_class($entity)) == false)
+        {
+            throw new \Exception("No Acl annotation defined", 1);
+        }
 
         $this->clearAclOf($aclClass,$entity);
 
         $event = new RequestPopulationEvent($entity);
         $this->eventDispatcher->dispatch(RequestPopulationEvent::NAME,$event);
 
+        $event->addUser($this->em->getRepository(User::class)->find(1));
+
         foreach ($event->getAllowedUsers() as $user)
         {
-            $acl = new $aclClass();
-            $acl->setUser($user);
-            $acl->setEntity($entity);
-            $this->em->persist($acl);
+            $this->persistAcl($user,$entity);
         }
 	}
 
-    protected function clearAclOf($aclClass,$entity)
-    {       
-        $acls = $this->em->getRepository($aclClass)->findByEntity($entity);
+    protected function persistAcl($user,$entity)
+    {
+        $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
+        $data = [
+            'user_id' => $user->getId(),
+            'entity_id' => $entity->getId(),
+        ];
+        $connection = $this->em->getConnection();
+        $connection->insert('acl_'.$entityTableName,$data);
+    }
 
-        foreach($acls as $acl)
-        {
-            $this->em->remove($acl);
-        }
+    protected function clearAclOf(,$entity)
+    {       
+        $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
+        $data = [
+            'entity_id' => $entity->getId()
+        ];
+        $connection = $this->em->getConnection();
+        $connection->delete('acl_'.$entityTableName,$data);
     }
 }
