@@ -10,8 +10,6 @@ use EveryCheck\Acl\Event\RequestPopulationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Annotations\Reader;
 
-use UserBundle\Entity\User;
-
 class AclManager
 {
 
@@ -41,8 +39,6 @@ class AclManager
 
         $event = new RequestPopulationEvent($entity);
         $this->eventDispatcher->dispatch(RequestPopulationEvent::NAME,$event);
-
-        $event->addUser($this->em->getRepository(User::class)->find(1));
 
         foreach ($event->getAllowedUsers() as $user)
         {
