@@ -61,6 +61,17 @@ class AclManager
         $connection->insert('acl_'.$entityTableName,$data);
     }
 
+    public function removeAccess($user,$entity)
+    {
+        $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
+        $data = [
+            'user_id' => $user->getId(),
+            'entity_id' => $entity->getId(),
+        ];
+        $connection = $this->em->getConnection();
+        $connection->delete('acl_'.$entityTableName,$data);
+    }
+
     protected function clearAclOf($entity)
     {       
         $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
