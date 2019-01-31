@@ -19,9 +19,10 @@ class CreateSchemaListener implements EventSubscriber
     protected $createdTable = [];
     protected $userTableName = '';
 
-    public function __construct(AclManager $manager)
+    public function __construct(AclManager $manager,$userClass)
     {
         $this->manager = $manager;
+        $this->userClass = $userClass;
     }
 
     public function getSubscribedEvents()
@@ -73,9 +74,7 @@ class CreateSchemaListener implements EventSubscriber
 
     public function setupUserTable(GenerateSchemaTableEventArgs $eventArgs)
     {
-        $userClass = 'UserBundle\Entity\User';
-
-        if( $userClass != $eventArgs->getClassMetadata()->name )
+        if( $this->userClass != $eventArgs->getClassMetadata()->name )
         {
             return;
         }
