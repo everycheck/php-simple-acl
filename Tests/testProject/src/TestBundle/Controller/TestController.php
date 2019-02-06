@@ -27,6 +27,13 @@ class TestController extends Controller
 
 		$this->get('simple_acl')->updateAclOf($entity);
 
+		$user = $this->get('security.token_storage')->getToken()->getUser();
+
+		if($this->get('simple_acl')->hasAcces($user,$entity) ==false)
+		{
+			throw new \Exception("This should never happend", 1);
+		}
+
 		return new Response("hello world", 200, ["CONTENT-TYPE"=>"application/json"]);
 	}
 }

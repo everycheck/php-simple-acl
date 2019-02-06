@@ -46,6 +46,29 @@ class AclManager
         }
 	}
 
+    public function hasAcces($user,$entity) : bool
+    {
+        $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
+
+        $connection = $this->em->getConnection();
+        $queryBuilder = $connection->createQueryBuilder();
+        
+        $queryBuilder
+            ->select('*')
+            ->from('acl_'.$entityTableName)
+            ->where('user_id = :userid')
+            ->andWhere('entity_id = :entityid')
+            ->setParameter('userid' , $user->getId())
+            ->setParameter('entityid' , $entity->getId())
+        ;
+
+        $statement = $queryBuilder->execute();
+        $result = $statement->fetchAll();
+
+        return count($result) > 0;
+    }
+
+
     protected function persistAcl($user,$entity)
     {
         $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
