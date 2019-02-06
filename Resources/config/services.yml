@@ -1,7 +1,7 @@
 services:
     simple_acl:
         class: EveryCheck\SimpleAclBundle\Service\AclManager
-        arguments: ["@doctrine.orm.entity_manager","@event_dispatcher","@annotation_reader"]
+        arguments: ["@doctrine.orm.entity_manager","@event_dispatcher","@annotation_reader","@security.token_storage"]
         public: true
 
     acl_doctrine_subscriber:

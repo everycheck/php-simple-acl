@@ -13,11 +13,12 @@ use Doctrine\Common\Annotations\Reader;
 class AclManager
 {
 
-	public function __construct(EntityManagerInterface $em,EventDispatcherInterface $eventDispatcher,Reader $annotationReader)
+	public function __construct(EntityManagerInterface $em,EventDispatcherInterface $eventDispatcher,Reader $annotationReader,$tokenStorage)
 	{
 		$this->em               = $em;
         $this->eventDispatcher  = $eventDispatcher;
         $this->annotationReader = $annotationReader;
+        $this->tokenStorage     = $tokenStorage;
 	}
 
 
@@ -46,8 +47,13 @@ class AclManager
         }
 	}
 
-    public function fetchAllEntityAccessible($user,$entityClass)
+    public function fetchAllEntityAccessible($entityClass,$user= null)
     {
+        if(empty($user))
+        {
+            $user = $this->tokenStorage->getToken()->getUser();
+        }
+
         $entityTableName = $this->em->getClassMetadata($entityClass)->getTableName();
         $data = [
             'user_id' => $user->getId(),
@@ -73,8 +79,13 @@ class AclManager
         return $this->em->getRepository($entityClass)->findById($query);
     }
 
-    public function hasAcces($user,$entity) : bool
+    public function hasAcces($entity,$user = null) : bool
     {
+        if(empty($user))
+        {
+            $user = $this->tokenStorage->getToken()->getUser();
+        }
+        
         $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
 
         $connection = $this->em->getConnection();

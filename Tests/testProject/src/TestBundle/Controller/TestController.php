@@ -27,21 +27,17 @@ class TestController extends Controller
 
 		$this->get('simple_acl')->updateAclOf($entity);
 
-		$user = $this->get('security.token_storage')->getToken()->getUser();
-
-		if($this->get('simple_acl')->hasAcces($user,$entity) ==false)
+		if($this->get('simple_acl')->hasAcces($entity) ==false)
 		{
 			throw new \Exception("This should never happend", 1);
 		}
 
-		$entities = $this->get('simple_acl')->fetchAllEntityAccessible($user,TestEntity::class);
+		$entities = $this->get('simple_acl')->fetchAllEntityAccessible(TestEntity::class);
 
 		if(count($entities) == 0 )
 		{
 			throw new \Exception("This should never happend", 1);
 		}
-		
-        var_dump($entities);
 
 		foreach ($entities as $entity)
 		{
