@@ -1,6 +1,6 @@
 <?php
 
-namespace EveryCheck\Acl\EventListener;
+namespace EveryCheck\SimpleAclBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\DBAL\Schema\Column;
@@ -10,7 +10,7 @@ use Doctrine\ORM\Tools\Event\GenerateSchemaEventArgs;
 use Doctrine\ORM\Tools\Event\GenerateSchemaTableEventArgs;
 use Doctrine\ORM\Tools\ToolEvents;
 
-use EveryCheck\Acl\Service\AclManager;
+use EveryCheck\SimpleAclBundle\Service\AclManager;
 
 
 class CreateSchemaListener implements EventSubscriber

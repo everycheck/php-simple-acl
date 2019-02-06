@@ -1,0 +1,13 @@
+services:
+      acl_user_population_listener:
+        class: EveryCheck\SimpleAclBundle\Tests\testProject\src\TestBundle\EventListener\UserPopulationListener
+        arguments: ["@security.token_storage"]
+        tags:
+            - { name: kernel.event_listener, event: acl_event.request_population , method: onPostedResquest }
+
+      user_service:
+          class: EveryCheck\SimpleAclBundle\Tests\testProject\src\TestBundle\EventListener\UserService
+          public: true
+          arguments: ['@doctrine.orm.entity_manager', '@security.token_storage', '@session', '@event_dispatcher']
+          tags:
+              - { name: kernel.event_listener, event: kernel.request }

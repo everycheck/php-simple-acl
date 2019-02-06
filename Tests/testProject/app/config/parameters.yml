@@ -1,0 +1,8 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# http://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_url:   'sqlite:///%kernel.cache_dir%/everycheckdb.db3'
+
+    # A secret key that's used to generate certain security-related tokens
+    secret:            def0000078a2ed0050f02330e4fc52bae6fbc89e7cc10e1e95b5ab59911755f253b6c599a4cf29aca3588f751e196650ff6935c314b2474e27835289ba20db297ecf60d1

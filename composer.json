@@ -1,6 +1,6 @@
 {
     "name": "everycheck/php-simple-acl",
-    "type": "library",
+    "type": "symfony-bundle",
     "license": "MIT",
     "require": {
         "symfony/symfony": "3.4.*"
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "EveryCheck\\Acl\\": "src/"
+            "EveryCheck\\SimpleAclBundle\\": ""
         },
         "exclude-from-classmap": [
             "/Tests/"
@@ -24,7 +24,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "EveryCheck\\Acl\\Tests\\": "Tests"
+            "EveryCheck\\SimpleAclBundle\\Tests\\": "Tests"
         }
     }
 }

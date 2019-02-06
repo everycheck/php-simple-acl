@@ -1,0 +1,11 @@
+services:
+    simple_acl:
+        class: EveryCheck\SimpleAclBundle\Service\AclManager
+        arguments: ["@doctrine.orm.entity_manager","@event_dispatcher","@annotation_reader"]
+        public: true
+
+    acl_doctrine_subscriber:
+        class: EveryCheck\SimpleAclBundle\EventListener\CreateSchemaListener
+        arguments: ["@simple_acl", "%simple_acl.user_class%"]
+        tags:
+           - { name: doctrine.event_subscriber, connection: default }

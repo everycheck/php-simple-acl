@@ -1,5 +1,5 @@
 <?php
-namespace EveryCheck\Acl\Event;
+namespace EveryCheck\SimpleAclBundle\Event;
  
 use Symfony\Component\EventDispatcher\Event;
  

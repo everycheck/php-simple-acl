@@ -1,12 +1,12 @@
 <?php
 
-namespace EveryCheck\Acl\Service;
+namespace EveryCheck\SimpleAclBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 
-use EveryCheck\Acl\Annotation\Restricted;
-use EveryCheck\Acl\Entity\AccessControlListInterface;
-use EveryCheck\Acl\Event\RequestPopulationEvent;
+use EveryCheck\SimpleAclBundle\Annotation\Restricted;
+use EveryCheck\SimpleAclBundle\Entity\AccessControlListInterface;
+use EveryCheck\SimpleAclBundle\Event\RequestPopulationEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Annotations\Reader;
 

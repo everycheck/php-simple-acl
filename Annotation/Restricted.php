@@ -1,5 +1,5 @@
 <?php
-namespace Everycheck\Acl\Annotation;
+namespace EveryCheck\SimpleAclBundle\Annotation;
 
 /**
  * @Annotation
