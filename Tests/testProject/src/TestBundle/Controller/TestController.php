@@ -34,6 +34,23 @@ class TestController extends Controller
 			throw new \Exception("This should never happend", 1);
 		}
 
+		$entities = $this->get('simple_acl')->fetchAllEntityAccessible($user,TestEntity::class);
+
+		if(count($entities) == 0 )
+		{
+			throw new \Exception("This should never happend", 1);
+		}
+		
+        var_dump($entities);
+
+		foreach ($entities as $entity)
+		{
+			if(($entity instanceof TestEntity) == false)
+			{
+				throw new \Exception("This should never happend", 1);
+			}
+		}
+
 		return new Response("hello world", 200, ["CONTENT-TYPE"=>"application/json"]);
 	}
 }

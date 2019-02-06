@@ -46,6 +46,33 @@ class AclManager
         }
 	}
 
+    public function fetchAllEntityAccessible($user,$entityClass)
+    {
+        $entityTableName = $this->em->getClassMetadata($entityClass)->getTableName();
+        $data = [
+            'user_id' => $user->getId(),
+        ];
+        $connection = $this->em->getConnection();
+        $queryBuilder = $connection->createQueryBuilder();
+        
+        $queryBuilder
+            ->select('entity_id')
+            ->from('acl_'.$entityTableName)
+            ->where('user_id   = ' .  $queryBuilder->createPositionalParameter($user->getId()))
+        ;
+
+        $statement = $queryBuilder->execute();
+        $result = $statement->fetchAll();
+
+        $query = [];
+        foreach ($result as $row)
+        {
+            $query[] = $row['entity_id'];
+        }
+
+        return $this->em->getRepository($entityClass)->findById($query);
+    }
+
     public function hasAcces($user,$entity) : bool
     {
         $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
