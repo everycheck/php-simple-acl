@@ -129,7 +129,7 @@ class AclManager
         $connection->delete('acl_'.$entityTableName,$data);
     }
 
-    protected function clearAclOf($entity)
+    public function clearAclOf($entity)
     {       
         $entityTableName = $this->em->getClassMetadata(get_class($entity))->getTableName();
         $data = [
