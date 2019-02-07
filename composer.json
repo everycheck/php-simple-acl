@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "EveryCheck\\SimpleAclBundle\\": ""
+            "EveryCheck\\SimpleAclBundle\\": "src/"
         },
         "exclude-from-classmap": [
             "/Tests/"

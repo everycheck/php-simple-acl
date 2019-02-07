@@ -1,4 +1,4 @@
 simple_acl_bundle_demo:
-    resource: "@SimpleAclBundle/Tests/testProject/src/TestBundle/Controller/"
+    resource: "../../src/TestBundle/Controller/"
     type:     annotation
     prefix:   /
